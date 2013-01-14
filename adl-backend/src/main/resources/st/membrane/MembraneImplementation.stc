@@ -58,6 +58,8 @@ ComponentFactoryMethod(definition) ::= <<
 
 #include "memory/api/Allocator.itf.h"
 
+#ifndef __MIND_NO_FACTORY
+
 #ifdef CONSTRUCTOR_METHOD_IMPLEMENTED
 void __component_<definition.name;format="toCName">_constructor(PRIVATE_DATA_T* instance);
 #endif
@@ -139,6 +141,8 @@ error0:
 <endif>
 <endif>
 }
+
+#endif /* __MIND_NO_FACTORY */
 
 >>
 
