@@ -175,7 +175,10 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     @Override
     public String toString() {
-      return fullCmd;
+      if (fullCmd == null)
+        return super.toString();
+      else
+        return fullCmd;
     }
   }
 
@@ -268,7 +271,10 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     @Override
     public String toString() {
-      return fullCmd;
+      if (fullCmd == null)
+        return super.toString();
+      else
+        return fullCmd;
     }
   }
 
@@ -349,7 +355,10 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     @Override
     public String toString() {
-      return fullCmd;
+      if (fullCmd == null)
+        return super.toString();
+      else
+        return fullCmd;
     }
   }
 
@@ -432,7 +441,10 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     @Override
     public String toString() {
-      return fullCmd;
+      if (fullCmd == null)
+        return super.toString();
+      else
+        return fullCmd;
     }
   }
 
