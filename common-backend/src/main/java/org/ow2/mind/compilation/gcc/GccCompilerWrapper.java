@@ -136,6 +136,14 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
       cmd.add(inputFile.getPath());
 
+      // save full command for debug and log purposes
+      final StringBuilder sb = new StringBuilder();
+      for (final String str : cmd) {
+        sb.append(str);
+        sb.append(" ");
+      }
+      fullCmd = sb.toString();
+
       // execute command
       ExecutionResult result;
       try {
@@ -163,6 +171,11 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     public String getDescription() {
       return "CPP: " + outputFile.getPath();
+    }
+
+    @Override
+    public String toString() {
+      return fullCmd;
     }
   }
 
@@ -215,6 +228,14 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
       cmd.add(inputFile.getPath());
 
+      // save full command for debug and log purposes
+      final StringBuilder sb = new StringBuilder();
+      for (final String str : cmd) {
+        sb.append(str);
+        sb.append(" ");
+      }
+      fullCmd = sb.toString();
+
       // execute command
       ExecutionResult result;
       try {
@@ -243,6 +264,11 @@ public class GccCompilerWrapper implements CompilerWrapper {
     public String getDescription() {
       return "GCC: " + outputFile.getPath();
 
+    }
+
+    @Override
+    public String toString() {
+      return fullCmd;
     }
   }
 
@@ -286,6 +312,14 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
       cmd.add(inputFile.getPath());
 
+      // save full command for debug and log purposes
+      final StringBuilder sb = new StringBuilder();
+      for (final String str : cmd) {
+        sb.append(str);
+        sb.append(" ");
+      }
+      fullCmd = sb.toString();
+
       // execute command
       ExecutionResult result;
       try {
@@ -311,6 +345,11 @@ public class GccCompilerWrapper implements CompilerWrapper {
     public String getDescription() {
       return "AS: " + outputFile.getPath();
 
+    }
+
+    @Override
+    public String toString() {
+      return fullCmd;
     }
   }
 
@@ -357,6 +396,14 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
       cmd.addAll(flags);
 
+      // save full command for debug and log purposes
+      final StringBuilder sb = new StringBuilder();
+      for (final String str : cmd) {
+        sb.append(str);
+        sb.append(" ");
+      }
+      fullCmd = sb.toString();
+
       // execute command
       ExecutionResult result;
       try {
@@ -381,6 +428,11 @@ public class GccCompilerWrapper implements CompilerWrapper {
 
     public String getDescription() {
       return "LD : " + outputFile.getPath();
+    }
+
+    @Override
+    public String toString() {
+      return fullCmd;
     }
   }
 

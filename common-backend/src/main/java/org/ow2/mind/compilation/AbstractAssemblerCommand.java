@@ -33,6 +33,7 @@ public abstract class AbstractAssemblerCommand implements AssemblerCommand {
 
   protected final Map<Object, Object> context;
   protected String                    cmd;
+  protected String                    fullCmd;
   protected final List<String>        flags             = new ArrayList<String>();
   protected final List<String>        defines           = new ArrayList<String>();
   protected final List<File>          includeDir        = new ArrayList<File>();
