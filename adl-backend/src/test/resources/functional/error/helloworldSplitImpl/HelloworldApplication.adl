@@ -1,0 +1,3 @@
+composite error.helloworldSplitImpl.HelloworldApplication 
+    extends GenericApplication<Helloworld> {
+}
