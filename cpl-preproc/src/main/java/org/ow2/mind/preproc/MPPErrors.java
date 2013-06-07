@@ -86,7 +86,10 @@ public enum MPPErrors implements ErrorTemplate {
       "In definition %s: METH(%s, %s) methods haven't been implemented !",
       "<defName>", "<itfName>", "<methName>"),
 
-  ;
+  /** */
+  MISSING_COLL_METHOD_DECLARATION(13,
+      "In definition %s: METH(%s[%s], %s) methods haven't been implemented !",
+      "<defName>", "<itfName>", "<idxStr>", "<methName>"), ;
 
   /** The groupId of ErrorTemplates defined in this enumeration. */
   public static final String GROUP_ID = "MPP";

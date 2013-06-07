@@ -1,16 +1,20 @@
 
 package org.ow2.mind.preproc;
 
+import static org.ow2.mind.adl.ast.ASTHelper.getNumberOfElement;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.objectweb.fractal.adl.ADLException;
 import org.objectweb.fractal.adl.interfaces.Interface;
 import org.objectweb.fractal.adl.types.TypeInterface;
+import org.objectweb.fractal.adl.types.TypeInterfaceUtil;
 import org.ow2.mind.adl.ast.ImplementationContainer;
 import org.ow2.mind.adl.ast.Source;
 import org.ow2.mind.adl.idl.InterfaceDefinitionDecorationHelper;
@@ -115,11 +119,97 @@ public class ImplementedMethodsHelper {
     return result;
   }
 
+  /**
+   * @param itf
+   * @return
+   */
+  public static Map<Integer, List<String>> getCollectionInterfaceUnimplementedMethods(
+      final Interface itf) {
+
+    assert TypeInterfaceUtil.isCollection(itf);
+
+    final int nbElement = getNumberOfElement(itf);
+    final Map<Integer, List<String>> implMeths = getCollectionImplementedMethods(itf);
+    final Map<Integer, List<String>> result = new HashMap<Integer, List<String>>();
+
+    InterfaceDefinition itfDef;
+
+    // assume that itfDef is already loaded
+    try {
+      itfDef = InterfaceDefinitionDecorationHelper
+          .getResolvedInterfaceDefinition((TypeInterface) itf, null, null);
+    } catch (final ADLException e) {
+      return result;
+    }
+
+    if (itfDef == null) return result;
+
+    final Method[] methods = itfDef.getMethods();
+
+    for (Integer i = 0; i < nbElement; i++) {
+      for (final Method currMethod : methods) {
+
+        List<String> implMethsByIdx = implMeths.get(i);
+        if (implMethsByIdx == null) {
+          implMethsByIdx = new ArrayList<String>();
+          implMeths.put(i, implMethsByIdx);
+        }
+
+        if (!implMethsByIdx.contains(currMethod.getName())) {
+          List<String> resultMethsByIdx = result.get(i);
+          if (resultMethsByIdx == null)
+            resultMethsByIdx = new ArrayList<String>();
+
+          resultMethsByIdx.add(currMethod.getName());
+          result.put(i, resultMethsByIdx);
+        }
+      }
+    }
+
+    return result;
+  }
+
   public static void addImplementedMethod(final Interface itf,
       final String methName) {
     final List<String> values = getImplementedMethods(itf);
     values.add(methName);
     setImplementedMethods(itf, values);
+  }
+
+  public static void addCollectionImplementedMethod(final Interface itf,
+      final Integer idxInt, final String methName) {
+    final Map<Integer, List<String>> values = getCollectionImplementedMethods(itf);
+
+    assert TypeInterfaceUtil.isCollection(itf);
+
+    List<String> implMethNamesForIdx = values.get(idxInt);
+    if (implMethNamesForIdx == null)
+      implMethNamesForIdx = new ArrayList<String>();
+
+    implMethNamesForIdx.add(methName);
+
+    values.put(idxInt, implMethNamesForIdx);
+    setCollectionImplementedMethods(itf, values);
+  }
+
+  private static void setCollectionImplementedMethods(final Interface itf,
+      final Map<Integer, List<String>> values) {
+
+    assert TypeInterfaceUtil.isCollection(itf);
+
+    itf.astSetDecoration(IMPLEMENTED_METHODS, values);
+  }
+
+  public static Map<Integer, List<String>> getCollectionImplementedMethods(
+      final Interface itf) {
+
+    assert TypeInterfaceUtil.isCollection(itf);
+
+    final Map<Integer, List<String>> idxMethNamesMap = (Map<Integer, List<String>>) itf
+        .astGetDecoration(IMPLEMENTED_METHODS);
+    if (idxMethNamesMap == null) return new HashMap<Integer, List<String>>();
+
+    return idxMethNamesMap;
   }
 
   /**

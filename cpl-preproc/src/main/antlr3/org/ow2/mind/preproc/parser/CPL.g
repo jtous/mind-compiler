@@ -182,7 +182,7 @@ protected serverMethDef returns [StringBuilder res = new StringBuilder()]
       )* // handle case of (((... METH(foo) )))(...
     {
       try {
-        cplChecker.serverMethDef($id, $meth, getSourceFile());
+        cplChecker.serverMethDef($id, itfIdx, $meth, getSourceFile());
       } catch (ADLException e1) {
         // ignore
       }

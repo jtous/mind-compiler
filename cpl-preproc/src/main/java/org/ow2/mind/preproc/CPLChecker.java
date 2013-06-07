@@ -107,8 +107,8 @@ public class CPLChecker {
     return false;
   }
 
-  public void serverMethDef(final Token itfName, final Token methName,
-      final String sourceFile) throws ADLException {
+  public void serverMethDef(final Token itfName, final String itfIdx,
+      final Token methName, final String sourceFile) throws ADLException {
     if (definition == null) {
       // Add this condition so that the testNG will not throw exceptions
       // (stand-alone node)
@@ -142,8 +142,26 @@ public class CPLChecker {
           locator(methName, sourceFile), itfName.getText(), methName.getText());
     }
 
-    if (definition instanceof ImplementationContainer)
+    // to avoid rewriting the grammar
+    StringBuilder idxSB = null;
+    Integer idxInt = null;
+    if (itfIdx != null) idxSB = new StringBuilder().append(itfIdx);
+
+    checkIdx(itf, itfName, idxSB, sourceFile);
+
+    if (itfIdx != null) {
+      try {
+        idxInt = Integer.parseInt(itfIdx);
+      } catch (final NumberFormatException e) {
+        // ignore, idx is not a number literal
+      }
+    }
+
+    if (!TypeInterfaceUtil.isCollection(itf))
       ImplementedMethodsHelper.addImplementedMethod(itf, methName.getText());
+    else
+      ImplementedMethodsHelper.addCollectionImplementedMethod(itf, idxInt,
+          methName.getText());
 
   }
 
@@ -344,6 +362,7 @@ public class CPLChecker {
           .haveAllSourcesBeenVisited((ImplementationContainer) definition)) {
 
         final Map<Interface, List<String>> allUnimplementedMethods = new HashMap<Interface, List<String>>();
+        final Map<Interface, Map<Integer, List<String>>> allCollectionUnimplementedMethods = new HashMap<Interface, Map<Integer, List<String>>>();
 
         logger
             .fine("All of "
@@ -357,16 +376,26 @@ public class CPLChecker {
                   TypeInterface.SERVER_ROLE)
               && !isControllerInterface(currItf.getName())) {
 
-            final List<String> unimplementedMethodsList = ImplementedMethodsHelper
-                .getInterfaceUnimplementedMethods(currItf);
-            if (!unimplementedMethodsList.isEmpty())
-              allUnimplementedMethods.put(currItf, unimplementedMethodsList);
+            if (!TypeInterfaceUtil.isCollection(currItf)) {
+              final List<String> unimplementedMethodsList = ImplementedMethodsHelper
+                  .getInterfaceUnimplementedMethods(currItf);
+              if (!unimplementedMethodsList.isEmpty())
+                allUnimplementedMethods.put(currItf, unimplementedMethodsList);
+            } else {
+              final Map<Integer, List<String>> unimplementedMethodsMap = ImplementedMethodsHelper
+                  .getCollectionInterfaceUnimplementedMethods(currItf);
+              if (!unimplementedMethodsMap.isEmpty()) {
+                allCollectionUnimplementedMethods.put(currItf,
+                    unimplementedMethodsMap);
+              }
+            }
 
           }
 
-        if (allUnimplementedMethods.isEmpty())
+        if (allUnimplementedMethods.isEmpty()
+            && allCollectionUnimplementedMethods.isEmpty())
           logger.fine("All methods were correctly implemented.");
-        else {
+        else if (!allUnimplementedMethods.isEmpty()) {
           final Set<Interface> interfaces = allUnimplementedMethods.keySet();
           final Interface itf0 = (Interface) interfaces.toArray()[0];
 
@@ -374,6 +403,20 @@ public class CPLChecker {
           errorManager.logError(MPPErrors.MISSING_METHOD_DECLARATION,
           /* locatorNoLine(sourceFile), */definition.getName(), itf0.getName(),
               allUnimplementedMethods.get(itf0));
+        } else if (!allCollectionUnimplementedMethods.isEmpty()) {
+          final Set<Interface> interfaces = allCollectionUnimplementedMethods
+              .keySet();
+          final Interface itf0 = (Interface) interfaces.toArray()[0];
+
+          final Map<Integer, List<String>> unimplMethsByIdxMap = allCollectionUnimplementedMethods
+              .get(itf0);
+          final Set<Integer> indexes = unimplMethsByIdxMap.keySet();
+          final Integer idx0 = (Integer) indexes.toArray()[0];
+
+          // Show missing methods from the first concerned interface
+          errorManager.logError(MPPErrors.MISSING_COLL_METHOD_DECLARATION,
+          /* locatorNoLine(sourceFile), */definition.getName(), itf0.getName(),
+              idx0.toString(), unimplMethsByIdxMap.get(idx0));
         }
       }
   }

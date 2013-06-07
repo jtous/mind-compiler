@@ -120,4 +120,45 @@ public class TestMissingMethodsError extends AbstractFunctionalTest {
           .fail("MPPError.MISSING_METHOD_DECLARATION should have been raised !");
     }
   }
+
+  @Test(groups = {"functional"})
+  public void testCollMissingPrintLnFlushX2() throws Exception {
+    initSourcePath(getDepsDir("fractal/api/Component.itf").getAbsolutePath(),
+        "common", "functional");
+
+    boolean errorOccured = false;
+
+    try {
+      runner.compileRunAndCheck("error.helloworldColl.HelloworldApplication",
+          null);
+    } catch (final ADLException e) {
+      errorOccured = true;
+      // Expected behavior: the compilation HAS to fail
+      final Error err = e.getError();
+      // Don't know why (FIXME: do some investigation) but it's gathered in
+      // an error collection
+      Assert.assertTrue(err instanceof ErrorCollection);
+      final Collection<Error> errors = ((ErrorCollection) err).getErrors();
+      Assert.assertEquals(errors.size(), 1);
+      final Error[] errorsAsArray = errors.toArray(new Error[1]);
+      final Error theRealError = errorsAsArray[0];
+      final ErrorTemplate theErrorTemplate = theRealError.getTemplate();
+      Assert.assertTrue(theErrorTemplate instanceof MPPErrors);
+
+      Assert
+          .assertTrue(theErrorTemplate.getErrorId() == MPPErrors.MISSING_COLL_METHOD_DECLARATION
+              .getErrorId());
+
+      Assert
+          .assertTrue(theRealError
+              .getMessage()
+              .equals(
+                  "In definition error.helloworldColl.Server: METH(s[0], [println, flush]) methods haven't been implemented !"));
+    }
+
+    if (!errorOccured) {
+      Assert
+          .fail("MPPError.MISSING_METHOD_DECLARATION should have been raised !");
+    }
+  }
 }
