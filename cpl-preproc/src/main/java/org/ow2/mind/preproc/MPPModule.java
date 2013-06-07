@@ -29,4 +29,5 @@ public class MPPModule extends AbstractMindModule {
   protected void configureMPPWrapper() {
     bind(MPPWrapper.class).to(BasicMPPWrapper.class);
   }
+
 }

@@ -77,6 +77,15 @@ public enum MPPErrors implements ErrorTemplate {
   UNKNOWN_DATAFIELD(10, "Invalid PRIVATE access, no such field \"%s\".",
       "<fieldName>"),
 
+  /** */
+  DUPLICATE_METHOD_DECLARATION(11, "Duplicate declaration of METH(%s, %s)",
+      "<itfName>", "<methName>"),
+
+  /** */
+  ANONYMOUS_MISSING_METHOD_DECLARATION(12,
+      "In definition %s: METH(%s, %s) methods haven't been implemented !",
+      "<defName>", "<itfName>", "<methName>"),
+
   ;
 
   /** The groupId of ErrorTemplates defined in this enumeration. */

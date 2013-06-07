@@ -82,7 +82,7 @@ public class BasicMPPWrapper implements MPPWrapper {
 
     BasicMPPCommand(final Definition definition,
         final Map<Object, Object> context) {
-      this.cplChecker = new CPLChecker(errorManagerItf, definition);
+      this.cplChecker = new CPLChecker(errorManagerItf, definition, context);
       this.context = context;
     }
 

@@ -131,8 +131,14 @@ tokens{
 }
 
 parseFile returns [String res]
-@init{StringBuilder sb = new StringBuilder(); }
-@after{$res=sb.toString(); out.println($res);}
+@init{ StringBuilder sb = new StringBuilder(); }
+@after{
+  try {
+    cplChecker.postParseChecks(getSourceFile());
+  } catch (ADLException e1) {
+    // TODO ?
+  }
+  $res=sb.toString(); out.println($res);}
   :(methDef    {sb.append($methDef.res);}
   | methCall    {sb.append($methCall.res); }
   | attAccess     {sb.append($attAccess.res); }
