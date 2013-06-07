@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2009 STMicroelectronics
+ * Copyright (C) 2013 STMicroelectronics
  *
  * This file is part of "Mind Compiler" is free software: you can redistribute 
  * it and/or modify it under the terms of the GNU Lesser General Public License 
@@ -16,7 +16,7 @@
  *
  * Contact: mind@ow2.org
  *
- * Authors: Matthieu Leclercq
+ * Authors: Stephane Seyvoz
  * Contributors: 
  */
 

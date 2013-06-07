@@ -17,7 +17,7 @@
  * Contact: mind@ow2.org
  *
  * Authors: Matthieu ANNE
- * Contributors: 
+ * Contributors: Stephane SEYVOZ (Assystem)
  */
 
 package org.ow2.mind.preproc;

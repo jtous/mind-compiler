@@ -83,12 +83,13 @@ public enum MPPErrors implements ErrorTemplate {
 
   /** */
   MISSING_METHOD_DECLARATION(12,
-      "In definition %s: METH(%s, %s) methods haven't been implemented !",
+      "In definition %s: METH(%s, %s) method(s) haven't been implemented !",
       "<defName>", "<itfName>", "<methName>"),
 
   /** */
-  MISSING_COLL_METHOD_DECLARATION(13,
-      "In definition %s: METH(%s[%s], %s) methods haven't been implemented !",
+  MISSING_COLL_METHOD_DECLARATION(
+      13,
+      "In definition %s: METH(%s[%s], %s) method(s) haven't been implemented !",
       "<defName>", "<itfName>", "<idxStr>", "<methName>"), ;
 
   /** The groupId of ErrorTemplates defined in this enumeration. */
