@@ -1,0 +1,3 @@
+composite error.helloworldColl.HelloworldApplication 
+    extends GenericApplication<Helloworld> {
+}
