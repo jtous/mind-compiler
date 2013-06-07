@@ -371,7 +371,7 @@ public class CPLChecker {
           final Interface itf0 = (Interface) interfaces.toArray()[0];
 
           // Show missing methods from the first concerned interface
-          errorManager.logError(MPPErrors.ANONYMOUS_MISSING_METHOD_DECLARATION,
+          errorManager.logError(MPPErrors.MISSING_METHOD_DECLARATION,
           /* locatorNoLine(sourceFile), */definition.getName(), itf0.getName(),
               allUnimplementedMethods.get(itf0));
         }

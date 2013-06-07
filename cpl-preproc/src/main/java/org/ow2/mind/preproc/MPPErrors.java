@@ -82,7 +82,7 @@ public enum MPPErrors implements ErrorTemplate {
       "<itfName>", "<methName>"),
 
   /** */
-  ANONYMOUS_MISSING_METHOD_DECLARATION(12,
+  MISSING_METHOD_DECLARATION(12,
       "In definition %s: METH(%s, %s) methods haven't been implemented !",
       "<defName>", "<itfName>", "<methName>"),
 
