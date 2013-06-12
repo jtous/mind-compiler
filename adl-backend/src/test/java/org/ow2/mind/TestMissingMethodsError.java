@@ -71,7 +71,7 @@ public class TestMissingMethodsError extends AbstractFunctionalTest {
           .assertTrue(theRealError
               .getMessage()
               .equals(
-                  "In definition error.helloworld.Server: METH(s, [println, flush]) methods haven't been implemented !"));
+                  "In definition error.helloworld.Server: METH(s, [println, flush]) method(s) haven't been implemented !"));
     }
 
     if (!errorOccured) {
@@ -112,7 +112,7 @@ public class TestMissingMethodsError extends AbstractFunctionalTest {
           .assertTrue(theRealError
               .getMessage()
               .equals(
-                  "In definition error.helloworldSplitImpl.Server: METH(s, [flush]) methods haven't been implemented !"));
+                  "In definition error.helloworldSplitImpl.Server: METH(s, [flush]) method(s) haven't been implemented !"));
     }
 
     if (!errorOccured) {
@@ -153,7 +153,7 @@ public class TestMissingMethodsError extends AbstractFunctionalTest {
           .assertTrue(theRealError
               .getMessage()
               .equals(
-                  "In definition error.helloworldColl.Server: METH(s[0], [println, flush]) methods haven't been implemented !"));
+                  "In definition error.helloworldColl.Server: METH(s[0], [println, flush]) method(s) haven't been implemented !"));
     }
 
     if (!errorOccured) {
