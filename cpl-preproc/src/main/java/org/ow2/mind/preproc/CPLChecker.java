@@ -63,7 +63,7 @@ public class CPLChecker {
 
   protected Map<String, List<String>> declaredItfMethMap = new HashMap<String, List<String>>();
 
-  private final Map<Object, Object>   context;
+  protected final Map<Object, Object> context;
 
   public CPLChecker(final ErrorManager errorManager,
       final Definition definition, final Map<Object, Object> context) {
