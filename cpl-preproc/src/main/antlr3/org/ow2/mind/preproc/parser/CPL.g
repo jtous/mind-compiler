@@ -17,7 +17,7 @@
  * Contact: mind@ow2.org
  *
  * Authors: Matthieu ANNE
- * Contributors: Olivier Lobry, Matthieu Leclercq
+ * Contributors: Olivier Lobry, Matthieu Leclercq, Stephane Seyvoz
  */
  
 grammar CPL;
