@@ -122,8 +122,14 @@ tokens{
 }
 
 parseFile returns [String res]
-@init{ StringBuilder sb = new StringBuilder(); }
+@init{ StringBuilder sb = new StringBuilder(); long start = System.nanoTime(); long end; }
 @after{
+
+	end = System.nanoTime();
+  long microseconds = (end - start) / 1000;
+  
+  System.out.println("[CPL-Preproc] parseFile duration (in µs): " + microseconds);
+  
   try {
     cplChecker.postParseChecks(getSourceFile());
   } catch (ADLException e1) {
@@ -145,7 +151,7 @@ parseFile returns [String res]
   ;
 
 
-protected methPtrDef returns [StringBuilder res = new StringBuilder()] 
+protected methPtrDef returns [StringBuilder res = new StringBuilder(); ] 
 	: METH_PTR ws1=ws* { $res.append(wstext($ws1.text)); }
 	  (
         '(' ws2=ws* ID ws3=ws* ')' { $res.append(wstext($ws2.text)).append($ID.text).append(wstext($ws3.text)); } 
@@ -166,7 +172,7 @@ protected methDef returns [StringBuilder res]
 	;
 		
 protected serverMethDef returns [StringBuilder res = new StringBuilder()]
-@init{String tmp = ""; String itfIdx = null;}
+@init{String tmp = ""; String itfIdx = null; }
   : METH ws1=ws* '(' ws2=ws* id=ID ws3=ws* ( '[' ws4=ws* INT ws5=ws* ']' ws6=ws* { itfIdx=$INT.text; } )? ',' ws7=ws* meth=ID ws8=ws* ')' ws9=ws*
       (
         e = ws* ')' { tmp += wstext($e.text) + ")"; }
@@ -207,7 +213,7 @@ protected serverMethDef returns [StringBuilder res = new StringBuilder()]
     ;
 
 protected privateMethDef returns [StringBuilder res = new StringBuilder()]
-@init{String tmp = "";}
+@init{String tmp = ""; }
     : METH ws1=ws* '(' ws2=ws* id=ID ws3=ws* ')' ws4=ws*
       (
         e = ws* ')' { tmp += wstext($e.text) + ")"; }
@@ -304,7 +310,7 @@ protected attAccess returns [StringBuilder res = new StringBuilder()]
     ;
 	
 protected structDecl returns [StringBuilder res = new StringBuilder()]
-@init{StringBuilder str = new StringBuilder(); boolean isPrivate = false;}
+@init{StringBuilder str = new StringBuilder(); boolean isPrivate = false; }
     : STRUCT ws1=ws* 
       (
         (structfield) => 
@@ -504,7 +510,7 @@ protected ptrMethCallArg1 returns [StringBuilder res = new StringBuilder()]
 	;
 
 protected getMyInterfaceCall returns [StringBuilder res = new StringBuilder()]
-@init{StringBuilder idx = null;}
+@init{StringBuilder idx = null; }
 	: GET_MY_INTERFACE ws1=ws* '(' ws2=ws* ID ws3=ws* ( index ws4=ws* {idx = $index.res;} ) ? ')'
       {
         try {
@@ -524,7 +530,7 @@ protected getMyInterfaceCall returns [StringBuilder res = new StringBuilder()]
     ;
 	
 protected bindMyInterfaceCall returns [StringBuilder res = new StringBuilder()]
-@init{StringBuilder idx = null;}
+@init{StringBuilder idx = null; }
 	: BIND_MY_INTERFACE ws1=ws* '(' ws2=ws* ID ws3=ws* ( index ws4=ws* {idx = $index.res;} ) ? 
 	  ',' ws5=ws* sItf=macroParam ws6=ws* ')'
       {
@@ -546,7 +552,7 @@ protected bindMyInterfaceCall returns [StringBuilder res = new StringBuilder()]
     ;
   
 protected isBoundCall returns [StringBuilder res = new StringBuilder()]
-@init{StringBuilder idx = null;}
+@init{StringBuilder idx = null; }
   : IS_BOUND ws1=ws* '(' ws2=ws* ID ws3=ws* ( index ws4=ws* {idx = $index.res;} ) ? ')'
       {
         try {
@@ -593,18 +599,24 @@ protected inParamsDef returns [StringBuilder res = new StringBuilder()]
     ;
 
 protected params returns [StringBuilder res = new StringBuilder()]
-    : '(' ws* ')'       { $res = null; }
-    | '(' inParams ')' 
-      { 
-        $res.append($inParams.res).append(" PARAMS_RPARENT ");
-      }
+    : '(' 
+        (
+          ws* ')'         { $res = null; }
+          | inParams ')'  { $res.append($inParams.res).append(" PARAMS_RPARENT "); }
+        )
     ;
 
 protected inParams  returns [StringBuilder res = new StringBuilder()] 
-    : ( '(' ws* ')'              { $res.append("(").append(wstext($ws.text)).append(")");}
-        |'(' ip = inParams ')'  { $res.append("(").append($ip.res).append(")"); }
-        | expr                  { $res.append($expr.res); }
-        | e = ~('(' | ')')      { $res.append($e.text); }
+    : ( 
+        expr                      { $res.append($expr.res); }
+        | e = ~('(' | ')')        { $res.append($e.text); }
+        | (
+            '(' 
+                (
+                  ws* ')'             { $res.append("(").append(wstext($ws.text)).append(")"); }
+                  | ip = inParams ')' { $res.append("(").append($ip.res).append(")"); }
+                )
+          )
       )+
     ;
 
