@@ -124,12 +124,6 @@ tokens{
 parseFile returns [String res]
 @init{ StringBuilder sb = new StringBuilder(); long start = System.nanoTime(); long end; }
 @after{
-
-	end = System.nanoTime();
-  long microseconds = (end - start) / 1000;
-  
-  System.out.println("[CPL-Preproc] parseFile duration (in µs): " + microseconds);
-  
   try {
     cplChecker.postParseChecks(getSourceFile());
   } catch (ADLException e1) {
