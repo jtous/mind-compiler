@@ -179,6 +179,12 @@ public abstract class AbstractCompilerCommand implements CompilerCommand {
       }
     }
 
+    /*
+     * In order for macros and header files to be ready in any case at compile
+     * time (needed for inline cases otherwise scheduling breaks)
+     */
+    if (includeFile != null) inputFiles.addAll(includeFile);
+
     if (dependencyOutputFile != null)
       outputFiles = Arrays.asList(outputFile, dependencyOutputFile);
     else

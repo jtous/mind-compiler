@@ -77,13 +77,16 @@ public class BasicMPPWrapper implements MPPWrapper {
     protected File                      outputFile;
     protected File                      headerOutputFile;
 
-    private List<File>                  inputFiles;
-    private List<File>                  outputFiles;
+    protected List<File>                inputFiles;
+    protected List<File>                outputFiles;
+
+    protected Definition                definition;
 
     BasicMPPCommand(final Definition definition,
         final Map<Object, Object> context) {
       this.cplChecker = new CPLChecker(errorManagerItf, definition, context);
       this.context = context;
+      this.definition = definition;
     }
 
     public String getCommand() {
