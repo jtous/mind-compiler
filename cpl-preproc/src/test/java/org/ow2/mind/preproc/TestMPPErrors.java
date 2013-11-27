@@ -26,6 +26,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertSame;
 import static org.testng.Assert.assertTrue;
 
+import java.io.File;
 import java.util.Collection;
 
 import org.objectweb.fractal.adl.ADLException;
@@ -48,12 +49,9 @@ public class TestMPPErrors extends AbstractTestMPP {
       final Error error = errors.iterator().next();
       assertSame(error.getTemplate(), MPPErrors.PARSE_ERROR);
       assertEquals(error.getLocator().getBeginLine(), 2);
-      if (!isRunningOnWindows())
-        assertTrue(error.getLocator().getInputFilePath()
-            .endsWith("error/error1.c"));
-      else
-        assertTrue(error.getLocator().getInputFilePath()
-            .endsWith("error\\\\error1.c"));
+      final File inputFile = new File(error.getLocator().getInputFilePath());
+      assertTrue(inputFile.getCanonicalPath().endsWith(
+          "error" + File.separator + "error1.c"));
       System.out.println(ErrorHelper.formatError(error));
     }
   }
@@ -70,11 +68,9 @@ public class TestMPPErrors extends AbstractTestMPP {
       final Error error = errors.iterator().next();
       assertSame(error.getTemplate(), MPPErrors.PARSE_ERROR);
       assertEquals(error.getLocator().getBeginLine(), 6);
-      if (!isRunningOnWindows())
-        assertTrue(error.getLocator().getInputFilePath()
-            .endsWith("init/data.h"));
-      else
-        assertTrue(error.getLocator().getInputFilePath().endsWith("data.h"));
+      final File inputFile = new File(error.getLocator().getInputFilePath());
+      assertTrue(inputFile.getCanonicalPath().endsWith(
+          "init" + File.separator + "data.h"));
       System.out.println(ErrorHelper.formatError(error));
     }
   }
@@ -91,16 +87,10 @@ public class TestMPPErrors extends AbstractTestMPP {
       final Error error = errors.iterator().next();
       assertSame(error.getTemplate(), MPPErrors.PARSE_ERROR);
       assertEquals(error.getLocator().getBeginLine(), 6);
-      if (!isRunningOnWindows())
-        assertTrue(error.getLocator().getInputFilePath()
-            .endsWith("init/data.h"));
-      else
-        assertTrue(error.getLocator().getInputFilePath().endsWith("data.h"));
+      final File inputFile = new File(error.getLocator().getInputFilePath());
+      assertTrue(inputFile.getCanonicalPath().endsWith(
+          "init" + File.separator + "data.h"));
       System.out.println(ErrorHelper.formatError(error));
     }
-  }
-
-  protected boolean isRunningOnWindows() {
-    return System.getProperty("os.name").contains("Windows");
   }
 }
