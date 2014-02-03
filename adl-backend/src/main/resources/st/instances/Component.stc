@@ -86,7 +86,7 @@ DeclareDependencies(definition, instance) ::= <<
 
 DeclareComponentInstance(instance) ::= <<
 #ifndef INSTANCE_<instance.decorations.("instance-name"); format="toCName">_DECLARED
-<instance.definition.name;format="toUpperCName">_DECLARE_INSTANCE(<instance.decorations.("instance-name"); format="toCName">);
+<instance.definition.name;format="toUpperCName">_DECLARE_INSTANCE(<instance.decorations.("instance-name"); format="toCName">)
 #define INSTANCE_<instance.decorations.("instance-name"); format="toCName">_DECLARED
 #endif
 
