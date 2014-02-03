@@ -121,7 +121,7 @@ InitInstance(definition, instance) ::= <<
   <AddSubComponentValues(definition=definition, instance=instance)>
   <AddAttributeValues(definition=definition, instance=instance)>
   <AddControllersValues(definition=definition, instance=instance)>
-);
+)
 >>
 
 AddItfValues(definition, instance) ::= <<
