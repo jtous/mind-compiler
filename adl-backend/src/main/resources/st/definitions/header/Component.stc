@@ -48,6 +48,18 @@ struct __component_<definition.name;format="toCName">_internal_data_t {
 <ControllerStructures(definition=definition)>
 <AttributeStructures(definition=definition)>
 <DataFieldStructures(definition=definition)>
+<if (!(definition.interfaces))>
+<if (!(definition.astNodeTypes.("internalInterface")))>
+<if (!(definition.astNodeTypes.("controller")))>
+<if (!(definition.attributes))>
+<if (!(definition.dataFields))>
+void* dummy; //Hack to avoid empty struct
+
+<endif>
+<endif>
+<endif>
+<endif>
+<endif>
 };
 /* End definition of internal component data type */
 
@@ -299,7 +311,9 @@ extern <ComponentTypeName(definitionName=definition.name)> instance_name;
 #define <definition.name;format="toUpperCName">_INIT_INSTANCE(instance_name<AddItfNames(definition=definition)><AddSubComponentNames(definition=definition)><AddAttributeNames(definition=definition)><AddControllersDataNames(definition=definition)>) \
 <InitializeGlobalControllerStructures(definition=definition)><ComponentTypeName(definitionName=definition.name)> instance_name = { \
   { /* __component_internal_data: */ \
-<InitializeInterfaces(definition=definition)><InitializeComponents(definition=definition)><InitializeControllerStructures(definition=definition)><InitializeAttributes(definition=definition)>  } \
+<InitializeInterfaces(definition=definition)><InitializeComponents(definition=definition)><InitializeControllerStructures(definition=definition)><InitializeAttributes(definition=definition)> \
+<if (!(definition.interfaces))><if (!(definition.astNodeTypes.("internalInterface")))><if (!(definition.astNodeTypes.("controller")))><if (!(definition.attributes))><if (!(definition.dataFields))> 0 <endif><endif><endif><endif><endif> \
+} \
 };
 
 /* Duplicate-definition fix for some families of compilers such as IAR */
