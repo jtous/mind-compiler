@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2010 STMicroelectronics
+ * Copyright (C) 2013 Schneider-Electric
  *
  * This file is part of "Mind Compiler" is free software: you can redistribute 
  * it and/or modify it under the terms of the GNU Lesser General Public License 
@@ -17,7 +18,7 @@
  * Contact: mind@ow2.org
  *
  * Authors: Matthieu Leclercq
- * Contributors: 
+ * Contributors: Stephane Seyvoz
  */
 
 package org.ow2.mind.preproc.parser;
@@ -45,8 +46,10 @@ public abstract class AbstractCPLParser extends Parser {
     final int line = Integer.parseInt(matcher.group(lineIndex));
     final String file = matcher.group(fileIndex);
 
+    // To be considered: keep latest processed file String in memory
+    // to contextualize line info ?
     if (file != null)
-      // standard behaviour
+      // standard behavior
       System.out.printf("Line:%d File:%s\n", line, file);
     else
       // alternative needed by some (rare) families of compilers (not writing

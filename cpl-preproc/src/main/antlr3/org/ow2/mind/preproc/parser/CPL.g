@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2009 France Telecom
+ * Copyright (C) 2013 Schneider-Electric
  *
  * This file is part of "Mind Compiler" is free software: you can redistribute 
  * it and/or modify it under the terms of the GNU Lesser General Public License 
@@ -122,12 +123,12 @@ tokens{
 }
 
 parseFile returns [String res]
-@init{ StringBuilder sb = new StringBuilder(); long start = System.nanoTime(); long end; }
+@init{StringBuilder sb = new StringBuilder(); }
 @after{
   try {
     cplChecker.postParseChecks(getSourceFile());
   } catch (ADLException e1) {
-    // TODO ?
+    // ignore
   }
   $res=sb.toString(); out.println($res);}
   :(methDef    {sb.append($methDef.res);}
