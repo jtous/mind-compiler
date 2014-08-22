@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2009 STMicroelectronics
  *
- * This file is part of "Mind Compiler" is free software: you can redistribute 
- * it and/or modify it under the terms of the GNU Lesser General Public License 
- * as published by the Free Software Foundation, either version 3 of the 
+ * This file is part of "Mind Compiler" is free software: you can redistribute
+ * it and/or modify it under the terms of the GNU Lesser General Public License
+ * as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
  * details.
@@ -17,7 +17,7 @@
  * Contact: mind@ow2.org
  *
  * Authors: Matthieu Leclercq
- * Contributors: 
+ * Contributors:
  */
 
 package org.ow2.mind.adl;
@@ -30,6 +30,7 @@ import org.objectweb.fractal.adl.Node;
 import org.objectweb.fractal.adl.error.NodeErrorLocator;
 import org.objectweb.fractal.adl.merger.MergeException;
 import org.ow2.mind.adl.ast.Binding;
+import org.ow2.mind.annotation.AnnotationHelper;
 import org.ow2.mind.st.STNodeMergerImpl;
 
 /**
@@ -68,11 +69,16 @@ public class STCFNodeMerger extends STNodeMergerImpl {
       super.computeSubNodeMergeInfos(subNode, parentInfo, subNodeType, infos);
 
     } else if (subNodeType.equals("interface")) {
-      // interface elements can't be merge, this is considered as an error
-      throw new InvalidMergeException(
-          ADLErrors.INVALID_INTERFACE_NAME_OVERRIDE_INHERITED_INTERFACE,
-          subNode, new NodeErrorLocator(inheritedSubNode));
-
+      if (AnnotationHelper.getAnnotation(subNode,
+          org.ow2.mind.adl.annotation.predefined.Override.class) != null) {
+        super.computeMergedSubNodesMergeInfos(subNode, inheritedSubNode,
+            parentInfo, infos, idAttributes, subNodeType);
+      } else {
+        // interface elements can't be merge, this is considered as an error
+        throw new InvalidMergeException(
+            ADLErrors.INVALID_INTERFACE_NAME_OVERRIDE_INHERITED_INTERFACE,
+            subNode, new NodeErrorLocator(inheritedSubNode));
+      }
     } else if (subNodeType.equals("attribute")) {
       // Attribute can be overridden, but the type cannot be changed
       final String inheritedType = inheritedSubNode.astGetAttributes().get(
